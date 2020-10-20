@@ -34,8 +34,6 @@ const config = {
 	// doSignOut = () => this.auth.signOut();
 // }
 
-console.log(process.env);
-
 
 const Firebase = firebase.initializeApp(config)
 

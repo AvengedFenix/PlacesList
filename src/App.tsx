@@ -2,17 +2,34 @@ import React from "react";
 import logo from "./logo.svg";
 import "./App.css";
 import AppNav from "./components/AppNav";
-import Firebase from './services/Firebase';
+// import Firebase from './services/Firebase';
+import "bootstrap/dist/css/bootstrap.min.css";
+import { Switch, Route, Router, Link } from "react-router-dom";
+import Explore from "./components/Explore";
+import { createBrowserHistory } from "history";
+import CreatePlace from "./components/CreatePlace";
 
+const history = createBrowserHistory();
 
-function App() {
-  console.log(process.env);
-  
+const App = () => {
+	// console.log(process.env);
+
 	return (
 		<div className="App">
-			<AppNav />
+			<Router history={history}>
+				<AppNav />
+				<Switch>
+					<Route path="/">
+						<Explore />
+					</Route>
+					<Route path="/createPlace">
+						<CreatePlace />
+					</Route>
+				</Switch>
+			</Router>
+      <CreatePlace/>
 		</div>
 	);
-}
+};
 
 export default App;
