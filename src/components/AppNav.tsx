@@ -23,7 +23,8 @@ const AppNav = () => {
 				<Navbar.Collapse id="">
 					<Nav className="mr-auto">
 						<Link to="/">
-							<Nav.Link >Explorar</Nav.Link>
+							Explorar
+							{/* <Nav.Link >Explorar</Nav.Link> */}
 						</Link>
 						<Link to="/createPlace">
               Place
