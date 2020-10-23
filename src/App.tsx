@@ -8,6 +8,7 @@ import { Switch, Route, Router, Link } from "react-router-dom";
 import Explore from "./components/Explore";
 import { createBrowserHistory } from "history";
 import CreatePlace from "./components/CreatePlace";
+import Place from "./components/Place";
 
 const history = createBrowserHistory();
 
@@ -27,7 +28,10 @@ const App = () => {
 					</Route>
 				</Switch>
 			</Router>
-      <CreatePlace/>
+			<div className="container">
+				<Place />
+			</div>
+			{/* <CreatePlace/> */}
 		</div>
 	);
 };

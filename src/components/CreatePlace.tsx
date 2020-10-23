@@ -6,6 +6,7 @@ import { Row } from "react-bootstrap";
 import RangeSlider from "react-bootstrap-range-slider";
 import { db } from "../services/Firebase";
 import Col from "react-bootstrap/esm/Col";
+import { functions } from "../services/Firebase";
 
 import "react-bootstrap-range-slider/dist/react-bootstrap-range-slider.css";
 
@@ -29,6 +30,8 @@ const addPlace = (
 			console.error("error adding doc: ", err);
 		});
 };
+
+const usingFunc = functions.httpsCallable("addPlace");
 
 const CreatePlace = () => {
 	const [name, setName] = useState("");
@@ -113,9 +116,21 @@ const CreatePlace = () => {
 				</Dropdown>
 				<br />
 				<Button
-					onClick={() => addPlace(name, available, range, type)}
+					onClick={
+						() => {
+							usingFunc({
+								name: name,
+								available: available,
+								range: range,
+								type: type,
+							}).then((res) => {
+								let message = res.data;
+								console.log(message);
+							});
+						} /*addPlace(name, available, range, type)*/
+					}
 					variant="primary"
-					type="submit"
+					// type="submit"
 				>
 					Crear
 				</Button>

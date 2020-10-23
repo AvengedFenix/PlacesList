@@ -1,6 +1,7 @@
 import firebase from "firebase/app";
 import "firebase/auth";
 import "firebase/firestore"
+import "firebase/functions"
 import dotenv from 'dotenv'
 dotenv.config()
 
@@ -43,6 +44,8 @@ export const auth = firebase.auth();
 const googleProvider = new firebase.auth.GoogleAuthProvider();
 
 export const db = firebase.firestore();
+
+export const functions = firebase.functions();
 
 export const signInWithGoogle = () =>{
 	auth.signInWithPopup(googleProvider).then((res) => {

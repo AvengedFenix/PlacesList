@@ -1,0 +1,23 @@
+[debug] [2020-10-21T22:32:25.275Z] ----------------------------------------------------------------------
+[debug] [2020-10-21T22:32:25.280Z] Command:       C:\Program Files\nodejs\node.exe C:\Users\Maslz\AppData\Roaming\npm\node_modules\firebase-tools\lib\bin\firebase.js deploy --only functions
+[debug] [2020-10-21T22:32:25.281Z] CLI Version:   8.13.1
+[debug] [2020-10-21T22:32:25.281Z] Platform:      win32
+[debug] [2020-10-21T22:32:25.281Z] Node Version:  v14.9.0
+[debug] [2020-10-21T22:32:25.283Z] Time:          Wed Oct 21 2020 16:32:25 GMT-0600 (Central Standard Time)
+[debug] [2020-10-21T22:32:25.284Z] ----------------------------------------------------------------------
+[debug] [2020-10-21T22:32:25.284Z] 
+[debug] [2020-10-21T22:32:25.298Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2020-10-21T22:32:25.299Z] > authorizing via signed-in user
+[debug] [2020-10-21T22:32:25.299Z] [iam] checking project lista-lugares for permissions ["cloudfunctions.functions.create","cloudfunctions.functions.delete","cloudfunctions.functions.get","cloudfunctions.functions.list","cloudfunctions.functions.update","cloudfunctions.operations.get","firebase.projects.get"]
+[debug] [2020-10-21T22:32:25.304Z] >>> HTTP REQUEST POST https://cloudresourcemanager.googleapis.com/v1/projects/lista-lugares:testIamPermissions  
+ {"permissions":["cloudfunctions.functions.create","cloudfunctions.functions.delete","cloudfunctions.functions.get","cloudfunctions.functions.list","cloudfunctions.functions.update","cloudfunctions.operations.get","firebase.projects.get"]}
+[debug] [2020-10-21T22:32:51.019Z] [iam] error while checking permissions, command may fail: FirebaseError: Server Error. read ECONNRESET
+[debug] [2020-10-21T22:32:51.021Z] >>> HTTP REQUEST POST https://iam.googleapis.com/v1/projects/lista-lugares/serviceAccounts/lista-lugares@appspot.gserviceaccount.com:testIamPermissions  
+ {"permissions":["iam.serviceAccounts.actAs"]}
+[debug] [2020-10-21T22:32:51.045Z] [functions] service account IAM check errored, deploy may fail: Server Error. getaddrinfo ENOTFOUND iam.googleapis.com {"name":"FirebaseError","children":[],"exit":2,"message":"Server Error. getaddrinfo ENOTFOUND iam.googleapis.com","original":{"errno":-3008,"code":"ENOTFOUND","syscall":"getaddrinfo","hostname":"iam.googleapis.com"},"status":500}
+[info] 
+[info] === Deploying to 'lista-lugares'...
+[info] 
+[info] i  deploying functions 
+[info] Running command: npm --prefix "$RESOURCE_DIR" run lint
+[info] Running command: npm --prefix "$RESOURCE_DIR" run build
