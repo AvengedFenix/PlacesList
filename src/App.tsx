@@ -28,6 +28,7 @@ const App = () => {
 					</Route>
 				</Switch>
 			</Router>
+			{/* <Explore /> */}
 			<div className="container">
 				<Place />
 			</div>

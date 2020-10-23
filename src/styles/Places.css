@@ -1,3 +1,5 @@
+@import url("https://fonts.googleapis.com/css2?family=Montserrat&family=Roboto&display=swap");
+
 .card-background {
 	width: 337.38px;
 	height: 125px;
@@ -33,34 +35,59 @@
 }
 
 .card-title {
-	font-family: Roboto;
+	font-family: Roboto, sans-serif;
 	font-style: normal;
+	position: relative;
+	text-align: left;
+	text-transform: uppercase;
+	font-weight: 300;
+	font-size: 16px;
+	line-height: 19px;
+	left: 37%;
+	color: rgba(0, 0, 0, 0.4);
+	margin-bottom: 0;
 }
 
 #card-place-type {
-	position: relative;
-	text-transform: uppercase;
-
-	font-weight: 300;
-	font-size: 16px;
-	--line-height: 19px;
+	margin-top: 4%;
 	letter-spacing: 0.1em;
-	top: -9.7vh;
-
+	--top: 10%;
 	color: rgba(0, 0, 0, 0.5);
 }
 
 #card-place-name {
-	font-weight: 200;
+	font-weight: 200 !important;
 	font-size: 14px;
 	line-height: 16px;
 	letter-spacing: 0.1em;
-	position: relative;
-	top: -10.7vh;
-	left: -0.8vw;
-	color: rgba(0, 0, 0, 0.4);
+	margin-top: 2%;
 }
 
+#card-place-radius {
+	margin-top: -4%;
+}
+
+.card-info {
+	position: relative;
+	text-align: left;
+	left: 37%;
+	font-family: Roboto;
+	font-style: normal;
+	font-weight: 500;
+	font-size: 24px;
+	line-height: 28px;
+	letter-spacing: 0.1em;
+	margin-bottom: 2%;
+	top: -4%;
+}
+
+#card-info-name {
+	--margin-bottom: 0;
+}
+
+#card-info-radius {
+	--top: -10%;
+}
 /* @media (min-width: 1080px) {
 	#card-icon {
 		--left: -6vw;
