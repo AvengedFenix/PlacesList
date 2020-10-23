@@ -1,40 +1,41 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { db } from "../services/Firebase";
 import Place from "./Place";
 
 const placesRef = db.collection("places");
 
-class Explore extends React.Component<{}, { places: any }> {
-	constructor(props: any) {
-		super(props);
-		this.state = {
-			places: [],
-		};
-	}
+const Explore = () => {
+	const [places, setPlaces] = useState([]);
 
-	async componentDidMount() {
-		let data: any = [];
-		await placesRef
-			.limit(1)
-			.get()
-			.then((sp) => {
-				sp.forEach((doc) => {
-					data.push(doc);
-					console.log(doc.id, "=>", doc.data());
+	useEffect(() => {
+		const fetchPlaces = async () => {
+			let list: any = [];
+			await placesRef.get().then((snapshot) => {
+				snapshot.forEach((doc) => {
+					list.push(doc.data());
 				});
 			});
-		this.setState({ places: data });
-	}
+			setPlaces(list);
+		};
+		console.log(places);
 
-	render() {
-		return (
-			<div className="container">
-				{this.state.places.map((place: any, i: number) => {
-					return <Place />;
-				})}
-			</div>
-		);
-	}
-}
+		fetchPlaces();
+	}, []);
+
+	return (
+		<div className="container">
+			{places.map((place: any, key: any) => {
+				return (
+					<Place
+						name={place.name}
+						available={place.available}
+						range={place.range}
+						type={place.type}
+					/>
+				);
+			})}
+		</div>
+	);
+};
 
 export default Explore;

@@ -118,17 +118,19 @@ const CreatePlace = () => {
 				<Button
 					onClick={
 						() => {
-							usingFunc({
-								name: name,
-								available: available,
-								range: range,
-								type: type,
-							}).then((res) => {
-								let message = res.data;
-								console.log(message);
-							});
-						} /*addPlace(name, available, range, type)*/
-					}
+							addPlace(name, available, range, type);
+						}
+						// () => {
+						// 	usingFunc({
+						// 		name: name,
+						// 		available: available,
+						// 		range: range,
+						// 		type: type,
+						// 	}).then((res) => {
+						// 		let message = res.data;
+						// 		console.log(message);
+						// 	});
+					} /*addPlace(name, available, range, type)*/
 					variant="primary"
 					// type="submit"
 				>
