@@ -35,10 +35,8 @@ const Explore = () => {
 		if (search === "") {
 			await placesRef.get().then((snapshot) => {
 				snapshot.forEach((doc) => {
-					let obj: any = [];
-					obj.push(doc.data)
-					obj.push(doc.id);
-					list.push(obj);
+				
+					list.push(doc.data());
 				});
 			});
 		} else {
@@ -205,10 +203,9 @@ const Explore = () => {
 			<br />
 			<div className="container">
 				{places.map((place: any, key: any) => {
-					console.log(place.id);
-					
 					return (
 						<Place
+							refNumber={place.refNumber}
 							id={place.id}
 							name={place.name}
 							available={place.available}

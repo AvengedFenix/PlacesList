@@ -1,17 +1,50 @@
 import React, { useState, useEffect } from "react";
 import "../styles/PlacesModal.css";
+import { db } from "../services/Firebase";
 
 interface Props {
 	name: string;
 	available: boolean;
 	range: number;
-  type: string;
-  id?: string;
+	type: string;
+	id?: string;
+	refNumber: number;
 }
 
-const PlaceModal: React.FC<Props> = ({ name, available, range, type, id }) => {
+const PlaceModal: React.FC<Props> = ({
+	name,
+	available,
+	range,
+	type,
+	id,
+	refNumber,
+}) => {
 	const [newReferenceName, setNewReferenceName] = useState("");
 	const [newReferenceLat, setNewReferenceLat] = useState<string>("");
+
+	const docRef = db.collection("places").doc(id);
+
+	const addReferences = async () => {
+		let strs = newReferenceLat.split(",", 2);
+		console.log("lon: ", strs[0], "lat: ", strs[1]);
+		refNumber += 1;
+		// let references: any = {};
+		// references[refNumber] = {};
+		docRef.update({
+			refNumber: refNumber,
+		});
+		let refId: string = docRef.collection("references").doc().id;
+		await docRef
+			.collection("references")
+			.doc(refId)
+			.set({
+				id: refId,
+				refNumber: refNumber,
+				name: newReferenceName,
+				latitude: parseFloat(strs[0]),
+				logitude: parseFloat(strs[1]),
+			});
+	};
 
 	return (
 		<div className="modal-container">
@@ -97,7 +130,12 @@ const PlaceModal: React.FC<Props> = ({ name, available, range, type, id }) => {
 					placeholder="Longitud y latitud"
 				/>
 
-				<button onClick={() => {}} className="newreference-btn">
+				<button
+					onClick={() => {
+						addReferences();
+					}}
+					className="newreference-btn"
+				>
 					+{/* <span className="btn-span">+</span> */}
 				</button>
 			</div>

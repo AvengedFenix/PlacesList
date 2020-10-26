@@ -16,15 +16,20 @@ const addPlace = (
 	range: number,
 	type: string | null
 ) => {
+	let id = db.collection("places").doc().id;
+
 	db.collection("places")
-		.add({
+		.doc(id)
+		.set({
+			id: id,
 			name: name,
 			available: available,
 			range: range,
 			type: type,
+			refNumber: 0,
 		})
 		.then((docRef) => {
-			console.log("Document written with ID: ", docRef.id);
+			console.log("Document written with ID: ", id);
 		})
 		.catch((err) => {
 			console.error("error adding doc: ", err);
