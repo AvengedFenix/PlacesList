@@ -1,14 +1,41 @@
-import React from "react";
+import React, { useState } from "react";
 import "../styles/Places.css";
+import Modal from "react-modal";
+import PlaceModal from './PlaceModal';
 
 interface Props {
 	name: string;
 	available: boolean;
 	range: number;
 	type: string;
+	id?: string
 }
 
-const Place: React.FC<Props> = ({ name, available, range, type }) => {
+const customStyles = {
+  content : {
+    top                   : '50%',
+    left                  : '50%',
+    right                 : 'auto',
+    bottom                : 'auto',
+    marginRight           : '-50%',
+		transform             : 'translate(-50%, -50%)',
+		width: "70%",
+		height: "50%",
+		overflow: "hidden",
+  }
+};
+
+const Place: React.FC<Props> = ({ name, available, range, type, id }) => {
+	const [modalState, setModalState] = useState<boolean>(false);
+
+	const openModal = () =>{
+		setModalState(true);
+	}
+
+	const closeModal = () =>{
+		setModalState(false);
+	}
+
 	return (
 		<>
 			<div className="card-background">
@@ -71,6 +98,13 @@ const Place: React.FC<Props> = ({ name, available, range, type }) => {
 						No disponible
 					</p>
 				)}
+				<button onClick={()=> setModalState(true)} className="card-btn-details">></button>
+				<Modal 
+					style={customStyles}
+					isOpen={modalState}
+					onRequestClose={() => closeModal()}>
+						<PlaceModal name={name} available={available} range={range} type={type}/>
+				</Modal>
 			</div>
 		</>
 	);

@@ -41,7 +41,7 @@
 	text-align: left;
 	text-transform: uppercase;
 	--font-weight: 300;
-	font-size: 16px;
+	font-size: 14px;
 	line-height: 19px;
 	left: 37%;
 	color: rgba(0, 0, 0, 0.4);
@@ -53,6 +53,7 @@
 	margin-top: 4%;
 	letter-spacing: 0.1em;
 	--top: 10%;
+	font-size: 16px;
 	color: rgba(0, 0, 0, 0.5);
 }
 
@@ -90,6 +91,19 @@
 
 #card-info-radius {
 	--top: -10%;
+}
+
+.card-btn-details {
+	background-color: white;
+	border-radius: 100%;
+	color: #9B59B6;
+	border-color: white;
+	position: absolute;
+	left: 85%;
+	top: 65%;
+	box-shadow: none;
+	font-weight: 800;
+	font-size: large;
 }
 /* @media (min-width: 1080px) {
 	#card-icon {

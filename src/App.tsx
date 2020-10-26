@@ -9,7 +9,6 @@ import Explore from "./components/Explore";
 import { createBrowserHistory } from "history";
 import CreatePlace from "./components/CreatePlace";
 import Place from "./components/Place";
-import TailWindNav from './components/TailWindNav';
 
 const history = createBrowserHistory();
 
@@ -19,8 +18,7 @@ const App = () => {
 	return (
 		<div className="App">
 			<Router>
-				<TailWindNav/>
-				{/* <AppNav /> */}
+				<AppNav />
 				<Switch>
 					<Route exact path="/" component={Explore}></Route>
 					<Route exact path="/createPlace" component={CreatePlace}></Route>

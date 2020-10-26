@@ -1,0 +1,149 @@
+.modal-container {
+	overflow: hidden;
+}
+
+#card-icon-modal {
+	position: absolute;
+	width: 532.75px;
+	height: 200.35px;
+	left: -15%;
+}
+
+.modal-title,
+.modal-info {
+	position: relative;
+	left: 25%;
+	text-align: left;
+}
+
+.modal-title {
+	font-family: Roboto, sans-serif;
+	font-style: normal;
+	text-transform: uppercase;
+	font-size: 22px;
+	font-weight: 200;
+}
+
+#modal-place-type {
+	font-weight: 300;
+	--margin-top: 4%;
+	letter-spacing: 0.1em;
+	font-size: 26px;
+	color: rgba(0, 0, 0, 0.5);
+}
+
+#modal-place-radius {
+	margin-top: 2vh;
+}
+
+.modal-info {
+	font-family: Roboto;
+	font-style: normal;
+	font-weight: 500;
+	font-size: 32px;
+	line-height: 28px;
+	letter-spacing: 0.1em;
+	margin-bottom: 0;
+}
+
+.modal-divider-vertical {
+	width: 0px;
+	height: 40%;
+	background-color: #d7bde2;
+	border: 1px solid #d7bde2;
+	--transform: rotate(90deg);
+	position: absolute;
+	left: 23%;
+	--top: 25%;
+}
+
+.modal-divider-horizontal {
+	width: 96%;
+	height: 0px;
+	background-color: #d7bde2;
+	border: 1px solid #d7bde2;
+	position: absolute;
+	top: 48%;
+}
+
+.availabilty-wrapper {
+	overflow: hidden;
+	display: inline;
+}
+
+#modal-info-availabilty,
+#modal-info-radius {
+	display: inline;
+}
+
+#modal-info-availabilty {
+	margin-left: 2%;
+	font-weight: 300;
+}
+
+#modal-reference-title {
+	--position: absolute;
+	left: 2%;
+	--top: 50%;
+	text-align: left;
+	display: inline-block;
+}
+
+.reference {
+	display: inline-block;
+	position: absolute;
+	top: 50%;
+	overflow: hidden;
+	width: 100%;
+	height: 12%;
+}
+
+.reference-input {
+	position: relative;
+	display: inline-block;
+	border: none;
+	box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+	border-radius: 8px;
+	color: #af7ac5;
+	padding-left: 3%;
+	margin-left: 3%;
+	padding-top: 1%;
+	padding-bottom: 1%;
+	left: 10%;
+}
+
+#lon-lat-input {
+	--margin-left: 2%;
+}
+
+.newreference-btn {
+	position: relative;
+	--display: inline-block;
+	border: none;
+	left: 12%;
+	border-radius: 100%;
+	background-color: #2ecc71;
+	height: 45px;
+	width: 45px;
+	color: white;
+
+	--margin: auto;
+	--padding-bottom: -110px;
+	--vertical-align: middle;
+}
+
+.btn-span {
+	font-family: roboto, sans-serif;
+	font-weight: 500;
+	font-size: 40px;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+}
+
+@media (min-width: 1440px) {
+	#card-icon-modal {
+    left: -10%;
+  }
+}
