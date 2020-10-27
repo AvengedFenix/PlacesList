@@ -27,7 +27,7 @@ const AppNav = () => {
 							{/* <Nav.Link >Explorar</Nav.Link> */}
 						</Link>
 						<Link to="/createPlace">
-              Place
+							Place
 							{/* <Nav.Link >Crear lugar</Nav.Link> */}
 						</Link>
 						<Button onClick={signIn}>Sign in</Button>

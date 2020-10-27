@@ -9,6 +9,7 @@ import Explore from "./components/Explore";
 import { createBrowserHistory } from "history";
 import CreatePlace from "./components/CreatePlace";
 import Place from "./components/Place";
+import Navbar from './components/Navbar';
 
 const history = createBrowserHistory();
 
@@ -18,7 +19,8 @@ const App = () => {
 	return (
 		<div className="App">
 			<Router>
-				<AppNav />
+				<Navbar />
+				{/* <AppNav /> */}
 				<Switch>
 					<Route exact path="/" component={Explore}></Route>
 					<Route exact path="/createPlace" component={CreatePlace}></Route>
