@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import Dropdown from "react-bootstrap/Dropdown";
@@ -6,9 +6,9 @@ import { Row } from "react-bootstrap";
 import RangeSlider from "react-bootstrap-range-slider";
 import { db } from "../services/Firebase";
 import Col from "react-bootstrap/esm/Col";
-import { functions } from "../services/Firebase";
-
 import "react-bootstrap-range-slider/dist/react-bootstrap-range-slider.css";
+import Register from "./Register";
+import { UserContext } from "./../providers/UserProvider";
 
 const addPlace = (
 	name: string,
@@ -36,7 +36,12 @@ const addPlace = (
 		});
 };
 
-const usingFunc = functions.httpsCallable("addPlace");
+const CreatePlaceScreen = () => {
+	const user = useContext(UserContext);
+
+	return <>{user ? <CreatePlace /> : <Register />}</>;
+};
+
 
 const CreatePlace = () => {
 	const [name, setName] = useState("");
@@ -146,4 +151,4 @@ const CreatePlace = () => {
 	);
 };
 
-export default CreatePlace;
+export default CreatePlaceScreen;

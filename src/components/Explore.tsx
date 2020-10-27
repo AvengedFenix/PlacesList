@@ -1,12 +1,24 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { db } from "../services/Firebase";
 import Place from "./Place";
 import "../styles/Explore.css";
+import { UserContext } from "./../providers/UserProvider";
+import Register from "./Register";
+import { functions } from "../services/Firebase";
+
 const placesRef = db.collection("places");
 
 const colors = {
 	purple: "#AF7AC5",
 	white: "#FFFFFF",
+};
+
+const usingFunc = functions.httpsCallable("addPlace");
+
+const ExploreScreen = () => {
+	const user = useContext(UserContext);
+
+	return <>{user ? <Explore /> : <Register />}</>;
 };
 
 const Explore = () => {
@@ -35,7 +47,6 @@ const Explore = () => {
 		if (search === "") {
 			await placesRef.get().then((snapshot) => {
 				snapshot.forEach((doc) => {
-				
 					list.push(doc.data());
 				});
 			});
@@ -46,16 +57,6 @@ const Explore = () => {
 				}
 				return null;
 			});
-			// await placesRef
-			// 	.where("name", ">=", search)
-			// 	.where("name", "<", search)
-			// 	.get()
-			// 	.then((snapshot) => {
-			// 		snapshot.forEach((doc) => {
-			// 			console.log("Query", doc);
-			// 			list.push(doc.data());
-			// 		});
-			// 	});
 		}
 		setPlaces(list);
 	};
@@ -67,15 +68,16 @@ const Explore = () => {
 
 	return (
 		<>
+			<button onClick={() => usingFunc()}> Function</button>
 			<input
 				value={search}
 				defaultValue=""
 				onChange={(e) => updateSearch(e)}
-				className="search-bar"
+				className="search-bar shadow"
 				placeholder="Buscar"
 			/>
-			<button onClick={() => clearFilters()} className="clear-btn">
-				Clear
+			<button onClick={() => clearFilters()} className="clear-btn shadow-sm">
+				x
 			</button>
 			<div className="button-container">
 				<button
@@ -94,7 +96,7 @@ const Explore = () => {
 							centroReligion: filterButtons.centroReligion,
 						});
 					}}
-					className="filter-button"
+					className="filter-button shadow"
 				>
 					Colonia
 				</button>
@@ -114,7 +116,7 @@ const Explore = () => {
 							centroReligion: filterButtons.centroReligion,
 						});
 					}}
-					className="filter-button"
+					className="filter-button shadow"
 				>
 					Centro educativo
 				</button>
@@ -134,7 +136,7 @@ const Explore = () => {
 							centroReligion: filterButtons.centroReligion,
 						});
 					}}
-					className="filter-button"
+					className="filter-button shadow"
 				>
 					Centro gubernamental
 				</button>
@@ -154,7 +156,7 @@ const Explore = () => {
 							centroReligion: filterButtons.centroReligion,
 						});
 					}}
-					className="filter-button"
+					className="filter-button shadow"
 				>
 					Centro comercial
 				</button>
@@ -174,7 +176,7 @@ const Explore = () => {
 							centroReligion: filterButtons.centroReligion,
 						});
 					}}
-					className="filter-button"
+					className="filter-button shadow"
 				>
 					Parque
 				</button>
@@ -194,7 +196,7 @@ const Explore = () => {
 							centroReligion: !filterButtons.centroReligion,
 						});
 					}}
-					className="filter-button"
+					className="filter-button shadow"
 				>
 					Centro de religión
 				</button>
@@ -219,4 +221,4 @@ const Explore = () => {
 	);
 };
 
-export default Explore;
+export default ExploreScreen;

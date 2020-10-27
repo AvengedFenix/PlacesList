@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 import { auth } from "../services/Firebase";
 import "../styles/Navbar.css";
+import { UserContext } from "./../providers/UserProvider";
 
 const logOut = async () => {
 	await auth
@@ -15,6 +16,8 @@ const logOut = async () => {
 };
 
 const Navbar = () => {
+	const user = useContext(UserContext);
+
 	return (
 		<div className="navbar">
 			<img
@@ -32,9 +35,11 @@ const Navbar = () => {
 					Crear
 				</h1>
 			</Link>
-			<button className="sign-out-btn" onClick={() => logOut()}>
-				Salir
-			</button>
+			{user ? (
+				<button className="sign-out-btn" onClick={() => logOut()}>
+					Salir
+				</button>
+			) : null}
 		</div>
 	);
 };
