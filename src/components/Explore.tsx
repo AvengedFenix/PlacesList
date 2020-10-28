@@ -206,7 +206,8 @@ const Explore = () => {
 			<div className="container">
 				{places.map((place: any, key: any) => {
 					return (
-						<Place
+						<Place 
+							key={key}
 							refNumber={place.refNumber}
 							id={place.id}
 							name={place.name}

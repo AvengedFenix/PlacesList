@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import "../styles/PlacesModal.css";
+import "../styles/ReferencesTable.css";
 import { db } from "../services/Firebase";
+import ReferencePoint from "./ReferencePoint";
 
 interface Props {
 	name: string;
@@ -21,6 +23,7 @@ const PlaceModal: React.FC<Props> = ({
 }) => {
 	const [newReferenceName, setNewReferenceName] = useState("");
 	const [newReferenceLat, setNewReferenceLat] = useState<string>("");
+	const [references, setReferences] = useState([]);
 
 	const docRef = db.collection("places").doc(id);
 
@@ -42,9 +45,37 @@ const PlaceModal: React.FC<Props> = ({
 				refNumber: refNumber,
 				name: newReferenceName,
 				latitude: parseFloat(strs[0]),
-				logitude: parseFloat(strs[1]),
+				longitude: parseFloat(strs[1]),
+			})
+			.then(() => {
+				setReferences([]);
 			});
 	};
+
+	const getReferences = async () => {
+		let list: any = [];
+		await docRef
+			.collection("references")
+			.get()
+			.then((snapshot) => {
+				snapshot.forEach((doc) => {
+					console.log(doc.data());
+
+					list.push(doc.data());
+				});
+			});
+		setReferences(list);
+	};
+
+	useEffect(() => {
+		console.log("useEffect Modal");
+
+		if (references.length === 0) {
+			console.log("Fetch references");
+
+			getReferences();
+		}
+	}, [references]);
 
 	return (
 		<div className="modal-container">
@@ -136,8 +167,31 @@ const PlaceModal: React.FC<Props> = ({
 					}}
 					className="newreference-btn"
 				>
-					+{/* <span className="btn-span">+</span> */}
+					+
 				</button>
+			</div>
+			<div className="reference-point-container">
+				<table style={{ width: "100%" }}>
+					<tr>
+						<th>ID</th>
+						<th>#</th>
+						<th>Nombre</th>
+						<th>Longitud</th>
+						<th>Latitud</th>
+					</tr>
+					{references.map((reference: any, key: any) => {
+						return (
+							<ReferencePoint
+								key={key}
+								id={reference.id}
+								name={reference.name}
+								lon={reference.longitude}
+								lat={reference.latitude}
+								number={reference.refNumber}
+							/>
+						);
+					})}
+				</table>
 			</div>
 		</div>
 	);
