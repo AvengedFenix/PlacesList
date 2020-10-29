@@ -1,6 +1,7 @@
 const functions = require("firebase-functions");
 
 const admin = require("firebase-admin");
+const fieldValue = require("firebase-admin").firestore.FieldValue;
 // const cors = require("cors")({ origin: true });
 
 admin.initializeApp();
@@ -18,7 +19,9 @@ exports.addPlace = functions.https.onCall((data: any, context: any) => {
 	let split = lonLat.split(",", 2);
 
 	let id = admin.firestore().collection("places").doc().id;
-	admin.firestore().collection("places")
+	admin
+		.firestore()
+		.collection("places")
 		.doc(id)
 		.set({
 			id: id,
@@ -29,6 +32,7 @@ exports.addPlace = functions.https.onCall((data: any, context: any) => {
 			refNumber: 0,
 			longitude: split[0],
 			latitude: split[1],
+			created: fieldValue.serverTimestamp(),
 		})
 		.then(() => {
 			console.log("Document written with ID: ", id);
@@ -38,10 +42,44 @@ exports.addPlace = functions.https.onCall((data: any, context: any) => {
 		});
 });
 
-// // Start writing Firebase Functions
-// // https://firebase.google.com/docs/functions/typescript
-//
-// export const helloWorld = functions.https.onRequest((request, response) => {
-//   functions.logger.info("Hello logs!", {structuredData: true});
-//   response.send("Hello from Firebase!");
-// });
+exports.getPlaces = functions.https.onCall(async (data: any, context: any) => {
+	let list: any = [];
+
+	await admin
+		.firestore()
+		.collection("places")
+		.orderBy("created", "desc")
+		.limit(9)
+		.get()
+		.then((snapshot: any) => {
+			snapshot.forEach((doc: any) => {
+				list.push(doc.data());
+			});
+		});
+	//console.log(list);
+
+	return list;
+});
+
+exports.getMorePlaces = functions.https.onCall(
+	async (data: any, context: any) => {
+		let list: any = [];
+		const lastVisible = data.lastVisible;
+		console.log(lastVisible);
+		
+		await admin
+			.firestore()
+			.collection("places")
+			.orderBy("created", "desc")
+			.startAfter(lastVisible)
+			.limit(9)
+			.get()
+			.then((snapshot: any) => {
+				snapshot.forEach((doc: any) => {
+					list.push(doc.data());
+				});
+			});
+
+		return list;
+	}
+);
