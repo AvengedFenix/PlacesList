@@ -1,12 +1,11 @@
 import firebase from "firebase/app";
 import "firebase/auth";
-import "firebase/firestore"
-import "firebase/functions"
-import dotenv from 'dotenv'
-dotenv.config()
+import "firebase/firestore";
+import "firebase/functions";
+import dotenv from "dotenv";
+dotenv.config();
 
-
-const config = {
+let config = {
 	apiKey: process.env.REACT_APP_API_KEY,
 	authDomain: process.env.REACT_APP_AUTH_DOMAIN,
 	databaseURL: process.env.REACT_APP_DATABASE_URL,
@@ -16,8 +15,14 @@ const config = {
 	appId: process.env.REACT_APP_APP_ID,
 };
 
-
-
+console.log(window.location.hostname);
+if (window.location.hostname === "localhost") {
+	console.log("local db");
+	
+	config.databaseURL = "http://localhost:8080";
+	console.log(config.databaseURL);
+	
+}
 // class Firebase {
 // 	// auth: app.auth.Auth;
 // 	constructor() {
@@ -26,18 +31,18 @@ const config = {
 // 		// this.auth = app.app().auth();
 // 	}
 
-	// doCreateUserWithEmailAndPassword = (email: string, password: string) => {
-	// 	this.auth.createUserWithEmailAndPassword(email, password);
-	// };
+// doCreateUserWithEmailAndPassword = (email: string, password: string) => {
+// 	this.auth.createUserWithEmailAndPassword(email, password);
+// };
 
-	// doSignInWithEmailAndPassword = (email: string, password: string) =>
-	// 	this.auth.signInWithEmailAndPassword(email, password);
+// doSignInWithEmailAndPassword = (email: string, password: string) =>
+// 	this.auth.signInWithEmailAndPassword(email, password);
 
-	// doSignOut = () => this.auth.signOut();
+// doSignOut = () => this.auth.signOut();
 // }
 
-
-const Firebase = firebase.initializeApp(config)
+const Firebase = firebase.initializeApp(config);
+firebase.functions().useFunctionsEmulator("http://localhost:5001");
 
 export const auth = firebase.auth();
 
@@ -47,13 +52,14 @@ export const db = firebase.firestore();
 
 export const functions = firebase.functions();
 
-export const signInWithGoogle = () =>{
-	auth.signInWithPopup(googleProvider).then((res) => {
-		console.log(res.user);
-		
-	}).catch((error)=>{
-		console.log(error.message );
-		
-	})
-}
+export const signInWithGoogle = () => {
+	auth
+		.signInWithPopup(googleProvider)
+		.then((res) => {
+			console.log(res.user);
+		})
+		.catch((error) => {
+			console.log(error.message);
+		});
+};
 export default Firebase;

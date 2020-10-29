@@ -5,6 +5,7 @@ import "../styles/Explore.css";
 import { UserContext } from "./../providers/UserProvider";
 import Register from "./Register";
 import { functions } from "../services/Firebase";
+import Firebase from './../services/Firebase';
 
 const placesRef = db.collection("places");
 

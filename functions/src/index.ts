@@ -5,32 +5,37 @@ const admin = require("firebase-admin");
 
 admin.initializeApp();
 
-exports.addPlace = functions.https.onCall((req: any, res: any) => {
+exports.addPlace = functions.https.onCall((data: any, context: any) => {
 	console.log("Hello there");
+	console.log("General Kenobi");
 
-	// cors(req, res, async () => {
-	// 	res.set("Access-Control-Allow-Origin", "*");
-	// 	res.set("Access-Control-Allow-Credentials", "true");
-	// 	res.set("Access-Control-Allow-Methods", "GET, PUT, POST, OPTIONS");
-	// 	res.set("Access-Control-Allow-Headers", "*");
-	// 	res.set("Access-Control-Max-Age", "3600");
+	const name = data.name;
+	const available = data.available;
+	const range = data.range;
+	const type = data.type;
+	const lonLat = data.lonLat;
 
-	// 	if (req.method === "OPTIONS") {
-	// 		res.end();
-	// 	} else {
-	// 		const name = req.query.name;
-	// 		const available = req.query.available;
-	// 		const range = req.query.range;
-	// 		const type = req.query.type;
+	let split = lonLat.split(",", 2);
 
-	// 		const write = await admin
-	// 			.firestore()
-	// 			.collection("places")
-	// 			.add({ name: name, available: available, range: range, type: type });
-
-	// 		res.json({ result: `Message with ID: ${write.id} added` });
-	// 	}
-	// });
+	let id = admin.firestore().collection("places").doc().id;
+	admin.firestore().collection("places")
+		.doc(id)
+		.set({
+			id: id,
+			name: name,
+			available: available,
+			range: range,
+			type: type,
+			refNumber: 0,
+			longitude: split[0],
+			latitude: split[1],
+		})
+		.then(() => {
+			console.log("Document written with ID: ", id);
+		})
+		.catch((err: any) => {
+			console.error("error adding doc: ", err);
+		});
 });
 
 // // Start writing Firebase Functions
