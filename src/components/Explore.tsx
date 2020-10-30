@@ -5,7 +5,8 @@ import "../styles/Explore.css";
 import { UserContext } from "./../providers/UserProvider";
 import Register from "./Register";
 import { functions } from "../services/Firebase";
-import Firebase from './../services/Firebase';
+import Firebase from "./../services/Firebase";
+import { listenerCount } from "cluster";
 
 const placesRef = db.collection("places");
 
@@ -43,13 +44,32 @@ const Explore = () => {
 		setSearch("");
 	};
 
+	const fetchMorePlaces = async () => {
+		let list: any = places;
+
+		const lastVisible = places[places.length - 1];
+		console.log(lastVisible);
+
+		const getPlaces = functions.httpsCallable("getMorePlaces");
+		await getPlaces({ lastVisible: lastVisible }).then((res: any) => {
+			res.data.map((doc: any) => {
+				console.log("doc", doc);
+
+				list.push(doc);
+				return null;
+			});
+		});
+		setPlaces(list);
+		console.log("More places", places);
+	};
+
 	const fetchPlaces = async () => {
-		let list: any = [];
+		// let list: any = [];
+		let list: any;
 		if (search === "") {
-			await placesRef.get().then((snapshot) => {
-				snapshot.forEach((doc) => {
-					list.push(doc.data());
-				});
+			const getPlaces = await functions.httpsCallable("getPlaces");
+			await getPlaces().then((res: any) => {
+				list = res.data;
 			});
 		} else {
 			places.map((doc: any, key: number) => {
@@ -64,15 +84,17 @@ const Explore = () => {
 	console.log(places);
 
 	useEffect(() => {
+		console.log("update");
+	}, [places]);
+
+	useEffect(() => {
 		fetchPlaces();
 	}, [search]);
 
 	return (
 		<>
-			<button onClick={() => usingFunc()}> Function</button>
 			<input
 				value={search}
-				defaultValue=""
 				onChange={(e) => updateSearch(e)}
 				className="search-bar shadow"
 				placeholder="Buscar"
@@ -207,7 +229,7 @@ const Explore = () => {
 			<div className="container">
 				{places.map((place: any, key: any) => {
 					return (
-						<Place 
+						<Place
 							key={key}
 							refNumber={place.refNumber}
 							id={place.id}
@@ -219,6 +241,14 @@ const Explore = () => {
 					);
 				})}
 			</div>
+			<button
+				className="load-more shadow"
+				onClick={() => {
+					fetchMorePlaces();
+				}}
+			>
+				Cargar más
+			</button>
 		</>
 	);
 };

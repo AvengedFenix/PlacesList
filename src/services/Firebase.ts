@@ -18,31 +18,16 @@ let config = {
 console.log(window.location.hostname);
 if (window.location.hostname === "localhost") {
 	console.log("local db");
-	
 	config.databaseURL = "http://localhost:8080";
 	console.log(config.databaseURL);
-	
 }
-// class Firebase {
-// 	// auth: app.auth.Auth;
-// 	constructor() {
-// 		app.initializeApp(config);
-
-// 		// this.auth = app.app().auth();
-// 	}
-
-// doCreateUserWithEmailAndPassword = (email: string, password: string) => {
-// 	this.auth.createUserWithEmailAndPassword(email, password);
-// };
-
-// doSignInWithEmailAndPassword = (email: string, password: string) =>
-// 	this.auth.signInWithEmailAndPassword(email, password);
-
-// doSignOut = () => this.auth.signOut();
-// }
 
 const Firebase = firebase.initializeApp(config);
-firebase.functions().useFunctionsEmulator("http://localhost:5001");
+
+if (window.location.hostname === "localhost") {
+	// firebase.firestore().useEmulator("localhost", 8080)
+	firebase.functions().useFunctionsEmulator("http://localhost:5001");
+}
 
 export const auth = firebase.auth();
 

@@ -94,6 +94,7 @@
 }
 
 .card-btn-details {
+	border: none;
 	background-color: white;
 	border-radius: 100%;
 	color: #9B59B6;
@@ -104,6 +105,7 @@
 	box-shadow: none;
 	font-weight: 800;
 	font-size: large;
+	font-size: 20px;
 }
 /* @media (min-width: 1080px) {
 	#card-icon {

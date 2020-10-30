@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import "../styles/Places.css";
 import Modal from "react-modal";
 import PlaceModal from './PlaceModal';
+import { Link } from 'react-router-dom';
 
 interface Props {
 	name: string;
@@ -99,7 +100,7 @@ const Place: React.FC<Props> = ({ name, available, range, type, id, refNumber })
 						No disponible
 					</p>
 				)}
-				<button onClick={()=> setModalState(true)} className="card-btn-details">></button>
+					<button onClick={()=> setModalState(true)} className="card-btn-details shadow-sm">></button>
 				<Modal 
 					style={customStyles}
 					isOpen={modalState}

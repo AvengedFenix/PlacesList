@@ -3,6 +3,7 @@ import "../styles/PlacesModal.css";
 import "../styles/ReferencesTable.css";
 import { db } from "../services/Firebase";
 import ReferencePoint from "./ReferencePoint";
+import { Link } from "react-router-dom";
 
 interface Props {
 	name: string;
@@ -24,6 +25,7 @@ const PlaceModal: React.FC<Props> = ({
 	const [newReferenceName, setNewReferenceName] = useState("");
 	const [newReferenceLat, setNewReferenceLat] = useState<string>("");
 	const [references, setReferences] = useState([]);
+	const [once, setOnce] = useState(true);
 
 	const docRef = db.collection("places").doc(id);
 
@@ -48,6 +50,7 @@ const PlaceModal: React.FC<Props> = ({
 				longitude: parseFloat(strs[1]),
 			})
 			.then(() => {
+				setOnce(true);
 				setReferences([]);
 			});
 	};
@@ -72,8 +75,10 @@ const PlaceModal: React.FC<Props> = ({
 
 		if (references.length === 0) {
 			console.log("Fetch references");
-
-			getReferences();
+			if (once) {
+				getReferences();
+				setOnce(false);
+			}
 		}
 	}, [references]);
 
@@ -193,6 +198,9 @@ const PlaceModal: React.FC<Props> = ({
 					})}
 				</table>
 			</div>
+			<Link to={`/maps/${id}`}>
+				<button>Ver mapa</button>
+			</Link>
 		</div>
 	);
 };
