@@ -9,7 +9,7 @@ interface Props {
 	available: boolean;
 	range: number;
 	type: string;
-	id?: string;
+	id: string;
 	refNumber: number;
 }
 

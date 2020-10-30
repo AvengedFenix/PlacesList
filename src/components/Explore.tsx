@@ -24,8 +24,9 @@ const ExploreScreen = () => {
 };
 
 const Explore = () => {
-	const [places, setPlaces] = useState([]);
+	const [places, setPlaces] = useState<any>([]);
 	const [search, setSearch] = useState<string>("");
+	const [loading, setLoading] = useState<boolean>(true);
 	const [filterButtons, setfilterButtons] = useState({
 		colonia: false,
 		centroEducativo: false,
@@ -45,7 +46,7 @@ const Explore = () => {
 	};
 
 	const fetchMorePlaces = async () => {
-		let list: any = places;
+		let list: any = [];
 
 		const lastVisible = places[places.length - 1];
 		console.log(lastVisible);
@@ -59,7 +60,9 @@ const Explore = () => {
 				return null;
 			});
 		});
-		setPlaces(list);
+		setPlaces((prevState: any) => {
+			return [...prevState, ...list];
+		});
 		console.log("More places", places);
 	};
 
@@ -79,18 +82,26 @@ const Explore = () => {
 				return null;
 			});
 		}
+
 		setPlaces(list);
 	};
 	console.log(places);
 
 	useEffect(() => {
-		console.log("update");
+		setLoading(false);
 	}, [places]);
 
 	useEffect(() => {
 		fetchPlaces();
 	}, [search]);
 
+	if (loading) {
+		return (
+			<div>
+				<h1>Cargando</h1>
+			</div>
+		);
+	}
 	return (
 		<>
 			<input
@@ -99,7 +110,7 @@ const Explore = () => {
 				className="search-bar shadow"
 				placeholder="Buscar"
 			/>
-			<button onClick={() => clearFilters()} className="clear-btn shadow-sm">
+			<button onClick={clearFilters} className="clear-btn shadow-sm">
 				x
 			</button>
 			<div className="button-container">

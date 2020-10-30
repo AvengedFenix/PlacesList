@@ -5,23 +5,24 @@
 	margin: 0 auto;
 	--text-align: left;
 	display: flex;
-	justify-content: left;
+	justify-content: space-evenly;
 }
 
 #app-icon {
 	width: 50.86px;
 	height: 70px;
-	margin-left: 18vw;
+	/* margin-left: 18vw; */
 	--display: inline-block;
 	position: relative;
 }
 
 .nav-option {
+	flex-shrink: 4;
 	color: #76448a;
 	display: inline-block;
 	position: relative;
 	--left: 24vw;
-	margin-left: 4vw;
+	/* margin-left: 4vw; */
 	font-family: Montserrat, sans-serif;
 	font-weight: 700;
 }
@@ -31,7 +32,7 @@
 }
 
 .sign-out-btn {
-  position: relative;
+  /* position: relative; */
 	background-color: #c72241;
 	color: white;
 	box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
@@ -45,6 +46,6 @@
   padding-top: 4px;
   padding-bottom: 4px;
   border: none;
-  left:30%;
+	left:30%;
 
 }

@@ -66,7 +66,7 @@ exports.getMorePlaces = functions.https.onCall(
 		let list: any = [];
 		const lastVisible = data.lastVisible;
 		console.log(lastVisible);
-		
+
 		await admin
 			.firestore()
 			.collection("places")
@@ -81,5 +81,21 @@ exports.getMorePlaces = functions.https.onCall(
 			});
 
 		return list;
+	}
+);
+
+exports.deletePlace = functions.https.onCall(
+	async (data: any, context: any) => {
+		const id = data.id;
+
+		await admin
+			.firestore()
+			.collection("places")
+			.doc(id)
+			.delete()
+			.then(() => {
+				console.log("Deleted document with ID", id);
+			})
+			.catch(() => console.log("error al elimnar documento"));
 	}
 );

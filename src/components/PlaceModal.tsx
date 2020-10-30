@@ -4,13 +4,14 @@ import "../styles/ReferencesTable.css";
 import { db } from "../services/Firebase";
 import ReferencePoint from "./ReferencePoint";
 import { Link } from "react-router-dom";
+import { functions } from "./../services/Firebase";
 
 interface Props {
 	name: string;
 	available: boolean;
 	range: number;
 	type: string;
-	id?: string;
+	id: string;
 	refNumber: number;
 }
 
@@ -26,6 +27,7 @@ const PlaceModal: React.FC<Props> = ({
 	const [newReferenceLat, setNewReferenceLat] = useState<string>("");
 	const [references, setReferences] = useState([]);
 	const [once, setOnce] = useState(true);
+	const [deleteBtn, setDeleteBtn] = useState(false);
 
 	const docRef = db.collection("places").doc(id);
 
@@ -68,6 +70,12 @@ const PlaceModal: React.FC<Props> = ({
 				});
 			});
 		setReferences(list);
+	};
+
+	const deletePlace = async () => {
+
+		const deleteRef = functions.httpsCallable("deletePlace");
+		await deleteRef({id: id}).then(() => console.log("Documento eliminado"));
 	};
 
 	useEffect(() => {
@@ -147,6 +155,32 @@ const PlaceModal: React.FC<Props> = ({
 						No disponible
 					</p>
 				)}
+			</div>
+			<div className="edit-btns-container">
+				<button className="edit-btn shadow" id="edit-btn">
+					Editar
+				</button>
+				<button
+					onClick={() => setDeleteBtn(!deleteBtn)}
+					className="edit-btn shadow"
+					id="delete-btn"
+				>
+					Borrar
+				</button>
+				{deleteBtn ? (
+					<div className="delete-confirmation shadow">
+						<h1 className="delete-header">
+							¿Está seguro que desea eliminar este lugar?
+						</h1>
+						<button
+							onClick={deletePlace}
+							className="edit-btn shadow"
+							id="delete-btn"
+						>
+							Confirmar
+						</button>
+					</div>
+				) : null}
 			</div>
 			<div className="modal-divider-horizontal" />
 			<div className="reference">

@@ -144,6 +144,48 @@
 
 @media (min-width: 1440px) {
 	#card-icon-modal {
-    left: -10%;
-  }
+		left: -10%;
+	}
+}
+
+.edit-btns-container {
+	position: absolute;
+	top: 32%;
+	left: 75%;
+}
+
+.edit-btn {
+	left: 90%;
+	border: none;
+	border-radius: 8px;
+	font-family: Montserrat;
+	font-style: normal;
+	font-weight: 500;
+	font-size: 24px;
+	color: white;
+	padding-left: 1vw;
+	padding-right: 1vw;
+	padding-top: 1vh;
+	padding-bottom: 1vh;
+}
+
+#edit-btn {
+	background-color: #76448a;
+}
+
+#delete-btn {
+	background-color: #c72241;
+	margin-left: 2vw;
+}
+
+.delete-confirmation {
+	position: absolute;
+	padding: 4%;
+	z-index: 20;
+	border-radius: 8px;
+}
+
+.delete-header {
+	font-size: 20px !important;
+	font-weight: 600;
 }
