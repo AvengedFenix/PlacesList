@@ -248,6 +248,8 @@ const Explore = () => {
 							available={place.available}
 							range={place.range}
 							type={place.type}
+							lon={place.longitude}
+							lat={place.latitude}
 						/>
 					);
 				})}

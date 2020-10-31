@@ -11,6 +11,8 @@ interface Props {
 	type: string;
 	id: string;
 	refNumber: number;
+	lon: number | string;
+	lat: number | string;
 }
 
 const customStyles = {
@@ -27,7 +29,7 @@ const customStyles = {
   }
 };
 
-const Place: React.FC<Props> = ({ name, available, range, type, id, refNumber }) => {
+const Place: React.FC<Props> = ({ name, available, range, type, id, refNumber, lon, lat }) => {
 	const [modalState, setModalState] = useState<boolean>(false);
 
 	const openModal = () =>{
@@ -105,7 +107,7 @@ const Place: React.FC<Props> = ({ name, available, range, type, id, refNumber })
 					style={customStyles}
 					isOpen={modalState}
 					onRequestClose={() => closeModal()}>
-						<PlaceModal name={name} available={available} range={range} type={type} refNumber={refNumber} id={id}/>
+						<PlaceModal name={name} available={available} range={range} type={type} refNumber={refNumber} id={id} lon={lon} lat={lat}/>
 				</Modal>
 			</div>
 		</>

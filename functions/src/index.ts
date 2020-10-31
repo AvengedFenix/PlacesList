@@ -30,8 +30,8 @@ exports.addPlace = functions.https.onCall((data: any, context: any) => {
 			range: range,
 			type: type,
 			refNumber: 0,
-			longitude: split[0],
-			latitude: split[1],
+			longitude: parseFloat(split[0]),
+			latitude: parseFloat(split[1]),
 			created: fieldValue.serverTimestamp(),
 		})
 		.then(() => {
@@ -95,7 +95,58 @@ exports.deletePlace = functions.https.onCall(
 			.delete()
 			.then(() => {
 				console.log("Deleted document with ID", id);
+				return "success";
 			})
-			.catch(() => console.log("error al elimnar documento"));
+			.catch(() => {
+				console.log("error al elimnar documento");
+				return "error";
+			});
 	}
 );
+
+exports.editPlace = functions.https.onCall(async (data: any, context: any) => {
+	const id = data.id;
+	const name = data.name;
+	const available = data.available;
+	const range = data.range;
+	const type = data.type;
+	const lonLat = data.lonLat;
+
+	console.log(
+		"id",
+		id,
+		"name",
+		name,
+		"available",
+		available,
+		"range",
+		range,
+		"type",
+		type,
+		"lonLat",
+		lonLat
+	);
+
+	let split = lonLat.split(",", 2);
+
+	await admin
+		.firestore()
+		.collection("places")
+		.doc(id)
+		.update({
+			name: name,
+			available: available,
+			range: range,
+			type: type,
+			longitude: parseFloat(split[0]),
+			latitude: parseFloat(split[1]),
+		})
+		.then(() => {
+			console.log("Updated");
+			return "success";
+		})
+		.catch(() => {
+			console.log("error al actualizar documento");
+			return "error";
+		});
+});

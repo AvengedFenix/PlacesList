@@ -5,6 +5,7 @@ import { db } from "../services/Firebase";
 import ReferencePoint from "./ReferencePoint";
 import { Link } from "react-router-dom";
 import { functions } from "./../services/Firebase";
+import Modal from "react-modal";
 
 interface Props {
 	name: string;
@@ -13,7 +14,160 @@ interface Props {
 	type: string;
 	id: string;
 	refNumber: number;
+	lon: number | string;
+	lat: number | string;
 }
+
+const customStyles = {
+	content: {
+		top: "50%",
+		left: "50%",
+		right: "auto",
+		bottom: "auto",
+		marginRight: "-50%",
+		transform: "translate(-50%, -50%)",
+		width: "90%",
+		height: "90%",
+	},
+};
+
+const EditForm: React.FC<Props> = ({
+	name,
+	available,
+	range,
+	type,
+	id,
+	refNumber,
+	lon,
+	lat,
+}) => {
+	const [editName, setEditName] = useState<string>(name);
+	const [editAvailable, setEditAvailable] = useState<boolean>(available);
+	const [editRange, setEditRange] = useState<number>(range);
+	const [editType, setEditType] = useState<string | null>(type);
+	const [dropdown, setDropdown] = useState<boolean>(false);
+	const [lonLat, setLonLat] = useState<string>(lon + " , " + lat);
+
+	const colors = {
+		white: "white",
+		purple: "#af7ac5",
+	};
+
+	const options = [
+		"Parque",
+		"Colonia",
+		"Centro comercial",
+		"Institución gubernamental",
+		"Centro educativo",
+		"Centro de religión",
+	];
+
+	const callEditPlace = functions.httpsCallable("editPlace");
+
+	return (
+		<div className="container form-container">
+			<label className="form-label ">Nombre del lugar</label>
+			<br />
+			<input
+				className="form-input shadow-sm"
+				onChange={(event) => setEditName(event.target.value)}
+				type="text"
+				placeholder="Ingrese el nombre"
+				value={editName}
+			/>
+			<br />
+			<input
+				className="form-checkbox"
+				defaultChecked={editAvailable}
+				onClick={() => setEditAvailable(editAvailable)}
+				type="checkbox"
+				name="available"
+			/>
+			<label className="form-label">Disponible</label>
+			<br />
+			<label className="form-label">Rango</label>
+			<div className="slidecontainer">
+				<input
+					onChange={(e) => setEditRange(parseFloat(e.target.value))}
+					type="range"
+					min="100"
+					max="1000"
+					className="slider"
+					id="myRange"
+					value={editRange}
+				/>
+				<p className="range-label">{editRange}</p>
+			</div>
+
+			<br />
+			<label className="form-label">Tipo de lugar</label>
+			<br />
+			<div className="dropdown">
+				<button
+					style={
+						dropdown ? { background: colors.purple, color: colors.white } : {}
+					}
+					onClick={() => setDropdown(!dropdown)}
+					className="dropdown-btn"
+				>
+					{editType}
+				</button>
+				<br />
+				{dropdown ? (
+					<div id="myDropdown" className="dropdown-content">
+						{/* <br/> */}
+						{options.map((option: string, key) => {
+							return (
+								<>
+									<button
+										className="dropdown-options"
+										key={key}
+										onClick={() => {
+											setEditType(option);
+											setDropdown(false);
+										}}
+									>
+										{option}
+									</button>
+									<br />
+								</>
+							);
+						})}
+					</div>
+				) : null}
+			</div>
+			<label className="form-label">Longitud y latitud</label>
+			<br />
+			<input
+				onChange={(event) => {
+					setLonLat(event.target.value);
+					console.log(lonLat);
+				}}
+				className="form-input shadow-sm"
+				placeholder="Longitud , latitud"
+				defaultValue={lon + " , " + lat}
+			/>
+			<br />
+			<button
+				className="create-btn shadow"
+				onClick={() => {
+					console.log("lonLat", lonLat);
+
+					callEditPlace({
+						id: id,
+						name: editName,
+						available: editAvailable,
+						range: editRange,
+						type: editType,
+						lonLat: lonLat,
+					});
+				}}
+			>
+				Editar
+			</button>
+		</div>
+	);
+};
 
 const PlaceModal: React.FC<Props> = ({
 	name,
@@ -22,12 +176,15 @@ const PlaceModal: React.FC<Props> = ({
 	type,
 	id,
 	refNumber,
+	lon,
+	lat,
 }) => {
 	const [newReferenceName, setNewReferenceName] = useState("");
 	const [newReferenceLat, setNewReferenceLat] = useState<string>("");
 	const [references, setReferences] = useState([]);
 	const [once, setOnce] = useState(true);
 	const [deleteBtn, setDeleteBtn] = useState(false);
+	const [modalState, setModalState] = useState<boolean>(false);
 
 	const docRef = db.collection("places").doc(id);
 
@@ -73,9 +230,8 @@ const PlaceModal: React.FC<Props> = ({
 	};
 
 	const deletePlace = async () => {
-
 		const deleteRef = functions.httpsCallable("deletePlace");
-		await deleteRef({id: id}).then(() => console.log("Documento eliminado"));
+		await deleteRef({ id: id }).then(() => console.log("Documento eliminado"));
 	};
 
 	useEffect(() => {
@@ -89,6 +245,14 @@ const PlaceModal: React.FC<Props> = ({
 			}
 		}
 	}, [references]);
+
+	const openModal = () => {
+		setModalState(true);
+	};
+
+	const closeModal = () => {
+		setModalState(false);
+	};
 
 	return (
 		<div className="modal-container">
@@ -157,7 +321,11 @@ const PlaceModal: React.FC<Props> = ({
 				)}
 			</div>
 			<div className="edit-btns-container">
-				<button className="edit-btn shadow" id="edit-btn">
+				<button
+					onClick={() => setModalState(true)}
+					className="edit-btn shadow"
+					id="edit-btn"
+				>
 					Editar
 				</button>
 				<button
@@ -232,9 +400,25 @@ const PlaceModal: React.FC<Props> = ({
 					})}
 				</table>
 			</div>
-			<Link to={`/maps/${id}`}>
-				<button>Ver mapa</button>
+			<Link to={`/maps/id=${id};lon=${lon};lat=${lat}`}>
+				<button className="view-map">Ver mapa</button>
 			</Link>
+			<Modal
+				style={customStyles}
+				isOpen={modalState}
+				onRequestClose={closeModal}
+			>
+				<EditForm
+					name={name}
+					available={available}
+					id={id}
+					lat={lat}
+					lon={lon}
+					range={range}
+					refNumber={refNumber}
+					type={type}
+				/>
+			</Modal>
 		</div>
 	);
 };

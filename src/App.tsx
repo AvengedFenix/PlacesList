@@ -7,7 +7,7 @@ import { createBrowserHistory } from "history";
 import CreatePlace from "./components/CreatePlace";
 import Navbar from "./components/Navbar";
 import UserProvider from "./providers/UserProvider";
-import Map from './components/Map.jsx';
+import Map from './components/Map';
 
 const App = () => {
 	// console.log(process.env);
@@ -21,7 +21,7 @@ const App = () => {
 					<Switch>
 						<Route exact path="/" component={Explore}></Route>
 						<Route exact path="/createPlace" component={CreatePlace}></Route>
-						<Route exact path="/maps/:id" component={Map}></Route>
+						<Route exact path="/maps/id=:id;lon=:lon;lat=:lat" component={Map}></Route>
 					</Switch>
 				</Router>
 				{/* <Explore /> */}
