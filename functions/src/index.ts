@@ -151,69 +151,76 @@ exports.editPlace = functions.https.onCall(async (data: any, context: any) => {
 		});
 });
 
-exports.getReferences = functions.https.onCall(async (data: any, context: any) => {
-	const id = data.id;
+exports.getReferences = functions.https.onCall(
+	async (data: any, context: any) => {
+		const id = data.id;
 
-	let list: any = [];
-	await admin
-		.firestore()
-		.collection("places")
-		.doc(id)
-		.collection("references")
-		.get()
-		.then((snapshot: any) => {
-			snapshot.forEach((doc: any) => {
-				console.log(doc.data());
+		let list: any = [];
+		await admin
+			.firestore()
+			.collection("places")
+			.doc(id)
+			.collection("references")
+			.get()
+			.then((snapshot: any) => {
+				snapshot.forEach((doc: any) => {
+					console.log(doc.data());
 
-				list.push(doc.data());
+					list.push(doc.data());
+				});
 			});
-		});
 
-	return list;
-})
+		return list;
+	}
+);
 
-exports.addReferences = functions.https.onCall(async (data: any, context: any) => {
-	const id = data.id;
-	const newRefLat = data.newRefLat;
-	const newRefName = data.newRefName;
-	let refNumber = data.refNumber;
+exports.addReferences = functions.https.onCall(
+	async (data: any, context: any) => {
+		const id = data.id;
+		const newRefLat = data.newRefLat;
+		const newRefName = data.newRefName;
+		let refNumber = data.refNumber;
 
-	let strs = newRefLat.split(",", 2);
-	refNumber += 1;
+		let strs = newRefLat.split(",", 2);
+		refNumber += 1;
 
-	const docRef = admin.firestore().collection("places").doc(id);
-	docRef.update({ refNumber: refNumber });
+		const docRef = admin.firestore().collection("places").doc(id);
+		docRef.update({ refNumber: refNumber });
 
-	let refID: string = docRef.collection("references").doc().id;
+		let refID: string = docRef.collection("references").doc().id;
 
-	await docRef
-		.collection("references")
-		.doc(refID)
-		.set({
-			id: refID,
-			refNumber: refNumber,
-			name: newRefName,
-			latitude: parseFloat(strs[0]),
-			longitude: parseFloat(strs[1]),
-		});
-})
+		await docRef
+			.collection("references")
+			.doc(refID)
+			.set({
+				id: refID,
+				refNumber: refNumber,
+				name: newRefName,
+				latitude: parseFloat(strs[0]),
+				longitude: parseFloat(strs[1]),
+			});
+	}
+);
 
-exports.deleteReference = functions.https.onCall(async (data: any, context: any) =>{
-	const id = data.id;
-	const refId= data.refId;
+exports.deleteReference = functions.https.onCall(
+	async (data: any, context: any) => {
+		const id = data.id;
+		const refId = data.refId;
 
-	await admin
-	.firestore()
-	.collection("places")
-	.doc(id).collection("refereces").doc(refId)
-	.delete()
-	.then(() => {
-		console.log("Deleted reference with ID", refId);
-		return "success";
-	})
-	.catch(() => {
-		console.log("error al elimnar referencia");
-		return "error";
-	});
-}
-})
+		await admin
+			.firestore()
+			.collection("places")
+			.doc(id)
+			.collection("refereces")
+			.doc(refId)
+			.delete()
+			.then(() => {
+				console.log("Deleted reference with ID", refId);
+				return "success";
+			})
+			.catch(() => {
+				console.log("error al elimnar referencia");
+				return "error";
+			});
+	}
+);
