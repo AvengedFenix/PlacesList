@@ -10,7 +10,7 @@
 	font-size: 36px;
 	font-family: Montserrat;
 	font-style: normal;
-	font-weight: 300;
+	font-weight: 400;
 	margin-top: 2%;
 	margin-bottom: 2%;
 	outline: #af7ac5;
@@ -39,7 +39,7 @@
 	display: flex;
 	flex-direction: row;
 	flex-wrap: wrap;
-	gap: 3em;
+	gap: 4vh;
 	margin: 0 auto;
 	--width: 1080px;
 	justify-content: center;
@@ -47,12 +47,11 @@
 	padding-right: 20%;
 }
 
-
 .filter-button {
 	display: inline-block;
 	--margin-bottom: -3%;
 	order: 3;
-	width: 30%;
+	--width: 30%;
 	background: #ffffff;
 	box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
 	border-radius: 8px;
@@ -61,7 +60,7 @@
 	font-style: normal;
 	font-weight: 300;
 	font-size: 24px;
-	line-height: 44px;
+	--line-height: 44px;
 	padding-left: 2%;
 	padding-right: 2%;
 	padding-top: 1%;
@@ -90,3 +89,26 @@
 .filter-button:focus {
 	color: #af7ac5;
 } */
+
+@media only screen and (max-width: 1020px) {
+	.filter-button {
+		--width: 80%;
+		font-size: 14px;
+	}
+
+	.button-container {
+		padding-left: 2%;
+		padding-right: 2%;
+		gap: 1vh;
+	}
+
+	.search-bar {
+		width: 80vw;
+		height: auto;
+		font-size: 30px;
+	}
+
+	.clear-btn{
+		font-size: 28px;
+	}
+}

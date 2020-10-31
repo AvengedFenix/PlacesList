@@ -9,8 +9,10 @@
 }
 
 #app-icon {
-	width: 50.86px;
-	height: 70px;
+	--width: 50.86px;
+	--height: 70px;
+	width: 3%;
+	height: auto;
 	/* margin-left: 18vw; */
 	--display: inline-block;
 	position: relative;
@@ -32,7 +34,7 @@
 }
 
 .sign-out-btn {
-  /* position: relative; */
+	/* position: relative; */
 	background-color: #c72241;
 	color: white;
 	box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
@@ -40,12 +42,18 @@
 	font-family: Montserrat;
 	font-style: normal;
 	font-weight: 500;
-  font-size: 30px;
-  padding-left: 1%;
-  padding-right: 1%;
-  padding-top: 4px;
-  padding-bottom: 4px;
-  border: none;
-	left:30%;
+	font-size: 30px;
+	padding-left: 1%;
+	padding-right: 1%;
+	--padding-top: 1%;
+	--padding-bottom: 1%;
+	border: none;
+	--left: 30%;
+}
 
+@media only screen and (max-width: 600px) {
+	.nav-option,
+	.sign-out-btn {
+		font-size: 22px;
+	}
 }

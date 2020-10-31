@@ -26,16 +26,22 @@
 	font-weight: 600;
 	font-size: 40px;
 	line-height: 49px;
-  margin-top: 4vh;
+	margin-top: 4vh;
+}
+
+#next-to-checkbox{
+	margin-left: 3vw;
 }
 
 .form-checkbox {
-	width: 2vw;
-	height: 2vw;
+	--width: 20%;
+	--height: 80%;
 	border: 2px solid #af7ac5;
 	border-color: #af7ac5;
 	color: #af7ac5;
-	margin-right: 2vw;
+	--margin-right: 2vw;
+	padding-bottom: 2vh;
+	transform: scale(2);
 }
 
 .range-label {
@@ -44,16 +50,16 @@
 	font-family: Montserrat;
 	font-style: normal;
 	font-weight: 300;
-  font-size: 36px;
-  padding-left: 2vw;
+	font-size: 36px;
+	padding-left: 2vw;
 }
 
 .slider {
 	background-color: #6c3483;
 	color: #6c3483;
-	width: 30%;
-  height: 4vh;
-  background: #E8DAEF;
+	width: 40%;
+	height: 4vh;
+	background: #e8daef;
 }
 
 .create-btn {
@@ -71,6 +77,7 @@
 	padding-left: 1vh;
 	padding-right: 1vh;
 	margin-top: 3vh;
+	margin-bottom: 3vh;
 }
 
 .dropdown-btn {
@@ -104,4 +111,19 @@
 	font-weight: 300;
 	font-size: 20px;
 	line-height: 44px;
+}
+
+@media only screen and (min-width: 360px) and (max-width: 720px) {
+	.form-input {
+		width: 90%;
+		font-size: 24px;
+	}
+
+	.dropdown-content {
+		text-align: left;
+		width: 100%;
+	}
+	.slider {
+		width: 70%;
+	}
 }

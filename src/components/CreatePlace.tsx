@@ -89,7 +89,7 @@ const CreatePlace = () => {
 				type="checkbox"
 				name="available"
 			/>
-			<label className="form-label">Disponible</label>
+			<label className="form-label" id="next-to-checkbox">Disponible</label>
 			<br />
 			<label className="form-label">Rango</label>
 			<div className="slidecontainer">

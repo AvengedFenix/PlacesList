@@ -46,8 +46,8 @@
 	border-radius: 8px;
 	padding-left: 1vw;
 	margin-top: 2vh;
-	width: 501px;
-	height: 69px;
+	width: 40vw;
+	height: 8vh;
 	font-family: Montserrat;
 	font-style: normal;
 	font-weight: 300;
@@ -71,4 +71,42 @@
 	padding-bottom: 1vh;
 	box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
 	border-radius: 8px;
+}
+
+@media only screen and (max-width: 1200px) {
+	.box {
+		top: 5%;
+		width: 80%;
+	}
+}
+
+@media only screen and (max-width: 1100px) {
+	.sign-in-input {
+		width: 70vw;
+	}
+}
+
+@media only screen and (max-width: 800px) {
+	/* .msg-inicio {
+		font-size: 24px;
+	}
+	.msg {
+		font-size: 50px;
+	} */
+}
+
+@media only screen and (min-width: 240px) and (max-width: 800px) {
+	.msg-inicio {
+		font-size: 18px;
+	}
+	.msg {
+		font-size: 34px;
+	}
+	.sign-in-input {
+		font-size: 24px;
+		height: 6vh;
+	}
+	.sign-in-btn {
+		font-size: 22px;
+	}
 }

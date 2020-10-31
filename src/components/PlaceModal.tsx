@@ -16,6 +16,7 @@ interface Props {
 	refNumber: number;
 	lon: number | string;
 	lat: number | string;
+	onRequestClose?: any;
 }
 
 const customStyles = {
@@ -40,6 +41,7 @@ const EditForm: React.FC<Props> = ({
 	refNumber,
 	lon,
 	lat,
+	onRequestClose,
 }) => {
 	const [editName, setEditName] = useState<string>(name);
 	const [editAvailable, setEditAvailable] = useState<boolean>(available);
@@ -152,7 +154,6 @@ const EditForm: React.FC<Props> = ({
 				className="create-btn shadow"
 				onClick={() => {
 					console.log("lonLat", lonLat);
-
 					callEditPlace({
 						id: id,
 						name: editName,
@@ -161,6 +162,7 @@ const EditForm: React.FC<Props> = ({
 						type: editType,
 						lonLat: lonLat,
 					});
+					onRequestClose();
 				}}
 			>
 				Editar
@@ -168,6 +170,10 @@ const EditForm: React.FC<Props> = ({
 		</div>
 	);
 };
+
+const referencesCollection = functions.httpsCallable("getReferences");
+
+const addReference = functions.httpsCallable("addReferences");
 
 const PlaceModal: React.FC<Props> = ({
 	name,
@@ -189,49 +195,35 @@ const PlaceModal: React.FC<Props> = ({
 	const docRef = db.collection("places").doc(id);
 
 	const addReferences = async () => {
-		let strs = newReferenceLat.split(",", 2);
-		console.log("lon: ", strs[0], "lat: ", strs[1]);
-		refNumber += 1;
-		// let references: any = {};
-		// references[refNumber] = {};
-		docRef.update({
+		await addReference({
+			id: id,
+			newRefLat: newReferenceLat,
+			newRefName: newReferenceName,
 			refNumber: refNumber,
+		}).then(() => {
+			setOnce(true);
+			setReferences([]);
 		});
-		let refId: string = docRef.collection("references").doc().id;
-		await docRef
-			.collection("references")
-			.doc(refId)
-			.set({
-				id: refId,
-				refNumber: refNumber,
-				name: newReferenceName,
-				latitude: parseFloat(strs[0]),
-				longitude: parseFloat(strs[1]),
-			})
-			.then(() => {
-				setOnce(true);
-				setReferences([]);
-			});
 	};
 
 	const getReferences = async () => {
-		let list: any = [];
-		await docRef
-			.collection("references")
-			.get()
-			.then((snapshot) => {
-				snapshot.forEach((doc) => {
-					console.log(doc.data());
-
-					list.push(doc.data());
-				});
-			});
+		let list: any;
+		await referencesCollection({ id: id }).then((res: any) => {
+			list = res.data;
+		});
 		setReferences(list);
 	};
 
 	const deletePlace = async () => {
 		const deleteRef = functions.httpsCallable("deletePlace");
 		await deleteRef({ id: id }).then(() => console.log("Documento eliminado"));
+	};
+
+	const removeReference = (index: number) => {
+		let list = references;
+		list.splice(index);
+
+		setReferences(list);
 	};
 
 	useEffect(() => {
@@ -385,16 +377,21 @@ const PlaceModal: React.FC<Props> = ({
 						<th>Nombre</th>
 						<th>Longitud</th>
 						<th>Latitud</th>
+						<th>Acciones</th>
 					</tr>
 					{references.map((reference: any, key: any) => {
 						return (
 							<ReferencePoint
 								key={key}
-								id={reference.id}
+								id={id}
+								refId={reference.id}
 								name={reference.name}
 								lon={reference.longitude}
 								lat={reference.latitude}
 								number={reference.refNumber}
+								listRemover={() => {
+									removeReference(key);
+								}}
 							/>
 						);
 					})}
@@ -417,6 +414,7 @@ const PlaceModal: React.FC<Props> = ({
 					range={range}
 					refNumber={refNumber}
 					type={type}
+					onRequestClose={closeModal}
 				/>
 			</Modal>
 		</div>
