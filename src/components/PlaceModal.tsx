@@ -6,6 +6,7 @@ import ReferencePoint from "./ReferencePoint";
 import { Link } from "react-router-dom";
 import { functions } from "./../services/Firebase";
 import Modal from "react-modal";
+import Loading from "./Loading";
 
 interface Props {
 	name: string;
@@ -138,7 +139,7 @@ const EditForm: React.FC<Props> = ({
 					</div>
 				) : null}
 			</div>
-			<label className="form-label">Longitud y latitud</label>
+			<label className="form-label">Latitud y Longitud</label>
 			<br />
 			<input
 				onChange={(event) => {
@@ -146,8 +147,8 @@ const EditForm: React.FC<Props> = ({
 					console.log(lonLat);
 				}}
 				className="form-input shadow-sm"
-				placeholder="Longitud , latitud"
-				defaultValue={lon + " , " + lat}
+				placeholder="Latitud , longitud"
+				defaultValue={lat + " , " + lon}
 			/>
 			<br />
 			<button
@@ -191,6 +192,7 @@ const PlaceModal: React.FC<Props> = ({
 	const [once, setOnce] = useState(true);
 	const [deleteBtn, setDeleteBtn] = useState(false);
 	const [modalState, setModalState] = useState<boolean>(false);
+	const [loading, setLoading] = useState(true);
 
 	const docRef = db.collection("places").doc(id);
 
@@ -236,6 +238,7 @@ const PlaceModal: React.FC<Props> = ({
 				setOnce(false);
 			}
 		}
+		setLoading(() => false);
 	}, [references]);
 
 	const openModal = () => {
@@ -357,7 +360,7 @@ const PlaceModal: React.FC<Props> = ({
 					onChange={(e) => setNewReferenceLat(e.target.value)}
 					className="reference-input"
 					id="lon-lat-input"
-					placeholder="Longitud y latitud"
+					placeholder="Latitud y longitud"
 				/>
 
 				<button
@@ -370,32 +373,36 @@ const PlaceModal: React.FC<Props> = ({
 				</button>
 			</div>
 			<div className="reference-point-container">
-				<table style={{ width: "100%" }}>
-					<tr>
-						<th>ID</th>
-						<th>#</th>
-						<th>Nombre</th>
-						<th>Longitud</th>
-						<th>Latitud</th>
-						<th>Acciones</th>
-					</tr>
-					{references.map((reference: any, key: any) => {
-						return (
-							<ReferencePoint
-								key={key}
-								id={id}
-								refId={reference.id}
-								name={reference.name}
-								lon={reference.longitude}
-								lat={reference.latitude}
-								number={reference.refNumber}
-								listRemover={() => {
-									removeReference(key);
-								}}
-							/>
-						);
-					})}
-				</table>
+				{!loading ? (
+					<table style={{ width: "100%" }}>
+						<tr>
+							<th>ID</th>
+							<th>#</th>
+							<th>Nombre</th>
+							<th>Longitud</th>
+							<th>Latitud</th>
+							<th>Acciones</th>
+						</tr>
+						{references.map((reference: any, key: any) => {
+							return (
+								<ReferencePoint
+									key={key}
+									id={id}
+									refId={reference.id}
+									name={reference.name}
+									lon={reference.longitude}
+									lat={reference.latitude}
+									number={reference.refNumber}
+									listRemover={() => {
+										removeReference(key);
+									}}
+								/>
+							);
+						})}
+					</table>
+				) : (
+					<Loading />
+				)}
 			</div>
 			<Link to={`/maps/id=${id};lon=${lon};lat=${lat}`}>
 				<button className="view-map">Ver mapa</button>

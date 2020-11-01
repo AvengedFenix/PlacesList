@@ -7,6 +7,7 @@ import Register from "./Register";
 import { functions } from "../services/Firebase";
 import Firebase from "./../services/Firebase";
 import { listenerCount } from "cluster";
+import Loading from "./Loading";
 
 const placesRef = db.collection("places");
 
@@ -16,11 +17,17 @@ const colors = {
 };
 
 const usingFunc = functions.httpsCallable("addPlace");
+const querySearch = functions.httpsCallable("placesQuery");
 
 const ExploreScreen = () => {
 	const user = useContext(UserContext);
+	const [loading, setLoading] = useState(true);
 
-	return <>{user ? <Explore /> : <Register />}</>;
+	useEffect(() => {
+		setTimeout(() => setLoading(false), 1500);
+	});
+
+	return <>{!loading ? user ? <Explore /> : <Register /> : <Loading />}</>;
 };
 
 const Explore = () => {
@@ -95,13 +102,41 @@ const Explore = () => {
 		fetchPlaces();
 	}, [search]);
 
-	if (loading) {
-		return (
-			<div>
-				<h1>Cargando</h1>
-			</div>
-		);
-	}
+	useEffect(() => {
+		let query: string = "";
+
+		if (filterButtons.colonia) {
+			query = query.concat('.where("type", "==", "Colonia")');
+		}
+		if (filterButtons.centroEducativo) {
+			query = query.concat('.where("type", "==", "Centro educativo")');
+		}
+		if (filterButtons.centroGubernamental) {
+			query = query.concat('.where("type", "==", "Centro gubernamental")');
+		}
+		if (filterButtons.centroComercial) {
+			query = query.concat('.where("type", "==", "Centro comercial")');
+		}
+		if (filterButtons.parque) {
+			query = query.concat('.where("type", "==", "Parque")');
+		}
+		if (filterButtons.centroReligion) {
+			query = query.concat('.where("type", "==", "Centro de religión")');
+		}
+		console.log(query);
+
+		querySearch({
+			colonia: filterButtons.colonia,
+			centroEducativo: filterButtons.centroEducativo,
+			centroGubernamental: filterButtons.centroGubernamental,
+			centroComercial: filterButtons.centroComercial,
+			parque: filterButtons.parque,
+			centroReligion: filterButtons.centroReligion
+		}).then((res:any)=>{
+			console.log(res);
+			
+		});
+	}, [filterButtons, search]);
 	return (
 		<>
 			<input

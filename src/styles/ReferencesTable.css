@@ -1,5 +1,20 @@
 .reference-point-container {
-  position: absolute;
-  top: 62%;
-  width: 100%;
+	position: absolute;
+	top: 62%;
+	width: 100%;
+}
+
+.delete-reference {
+	margin-left: 0px !important;
+}
+
+.ref-btn-container {
+	position: relative;
+	--display: flex;
+	--flex-wrap: nowrap;
+}
+
+#reference-map {
+  left: 35%;
+  top: 30%;
 }

@@ -141,14 +141,14 @@ const CreatePlace = () => {
 					</div>
 				) : null}
 			</div>
-			<label className="form-label">Longitud y latitud</label>
+			<label className="form-label">Latitud y longitud</label>
 			<br />
 			<input
 				onChange={(event) => {
 					setLonLat(event.target.value);
 				}}
 				className="form-input shadow-sm"
-				placeholder="Longitud , latitud"
+				placeholder="Latitud , longitud"
 			/>
 			<br />
 			<button

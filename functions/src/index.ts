@@ -30,8 +30,8 @@ exports.addPlace = functions.https.onCall((data: any, context: any) => {
 			range: range,
 			type: type,
 			refNumber: 0,
-			longitude: parseFloat(split[0]),
-			latitude: parseFloat(split[1]),
+			longitude: parseFloat(split[1]),
+			latitude: parseFloat(split[0]),
 			created: fieldValue.serverTimestamp(),
 		})
 		.then(() => {
@@ -138,8 +138,8 @@ exports.editPlace = functions.https.onCall(async (data: any, context: any) => {
 			available: available,
 			range: range,
 			type: type,
-			longitude: parseFloat(split[0]),
-			latitude: parseFloat(split[1]),
+			longitude: parseFloat(split[1]),
+			latitude: parseFloat(split[0]),
 		})
 		.then(() => {
 			console.log("Updated");
@@ -211,7 +211,7 @@ exports.deleteReference = functions.https.onCall(
 			.firestore()
 			.collection("places")
 			.doc(id)
-			.collection("refereces")
+			.collection("references")
 			.doc(refId)
 			.delete()
 			.then(() => {
@@ -222,5 +222,38 @@ exports.deleteReference = functions.https.onCall(
 				console.log("error al elimnar referencia");
 				return "error";
 			});
+	}
+);
+
+exports.placesQuery = functions.https.onCall(
+	async (data: any, context: any) => {
+		let list: any = [];
+		let ref = admin.firestore().collection("places");
+
+		if (data.colonia) {
+			ref = ref.where("type", "==", "Colonia");
+		}
+		if (data.centroEducativo) {
+			ref = ref.where("type", "==", "Centro educativo");
+		}
+		if (data.centroGubernamental) {
+			ref = ref.where("type", "==", "Centro gubernamental");
+		}
+		if (data.centroComercial) {
+			ref = ref.where("type", "==", "Centro comercial");
+		}
+		if (data.parque) {
+			ref = ref.where("type", "==", "Parque");
+		}
+		if (data.centroReligion) {
+			ref = ref.where("type", "==", "Centro de religión");
+		}
+
+		await ref.get().then((snapshot: any) => {
+			snapshot.forEach((doc: any) => {
+				list.push(doc.data());
+			});
+		});
+		return list;
 	}
 );
