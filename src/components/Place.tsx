@@ -61,7 +61,7 @@ const Place: React.FC<Props> = ({ name, available, range, type, id, refNumber, l
 						alt="Icono universidad"
 						src={process.env.PUBLIC_URL + "/icons/university.svg"}
 					/>
-				) : type === "Centro de religion" ? (
+				) : type === "Centro de religión" ? (
 					<img
 						id="card-icon"
 						alt="Icono iglesia"

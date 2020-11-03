@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import Dropdown from "react-bootstrap/Dropdown";
@@ -56,6 +56,8 @@ const CreatePlace = () => {
 	const [type, setType] = useState<string | null>("Seleccione un tipo");
 	const [dropdown, setDropdown] = useState(false);
 	const [lonLat, setLonLat] = useState("");
+	const [showToast, setShowToast] = useState(false);
+	const [toastType, setToastType] = useState("");
 
 	const options = [
 		"Parque",
@@ -71,8 +73,51 @@ const CreatePlace = () => {
 		purple: "#af7ac5",
 	};
 
+	useEffect(() => {
+		setTimeout(() => setShowToast(false), 8000);
+	}, [showToast]);
+
 	return (
 		<div className="container form-container">
+			{showToast ? (
+				toastType === "success" ? (
+					<div
+						style={{
+							backgroundColor: "#2ecc71",
+							color: "white",
+						}}
+						className="shadow toast-container"
+					>
+						<p className="toast-msg" style={{ fontSize: "26px" }}>
+							¡Creado con exito!
+						</p>
+					</div>
+				) : toastType === "Missing" ? (
+					<div
+						style={{
+							backgroundColor: "#c72241",
+							color: "white",
+						}}
+						className="shadow toast-container"
+					>
+						<p className="toast-msg" style={{ fontSize: "26px" }}>
+							El nombre, la latitud, longitud y el tipo deben estar llenos
+						</p>
+					</div>
+				) : (
+					<div
+						style={{
+							backgroundColor: "#c72241",
+							color: "white",
+						}}
+						className="shadow toast-container"
+					>
+						<p className="toast-msg" style={{ fontSize: "26px" }}>
+							Hubo un error al crear el lugar
+						</p>
+					</div>
+				)
+			) : null}
 			<label className="form-label ">Nombre del lugar</label>
 			<br />
 			<input
@@ -80,6 +125,7 @@ const CreatePlace = () => {
 				onChange={(event) => setName(event.target.value)}
 				type="text"
 				placeholder="Ingrese el nombre"
+				value={name}
 			/>
 			<br />
 			<input
@@ -88,8 +134,11 @@ const CreatePlace = () => {
 				onClick={() => setAvailable(!available)}
 				type="checkbox"
 				name="available"
+				checked={available}
 			/>
-			<label className="form-label" id="next-to-checkbox">Disponible</label>
+			<label className="form-label" id="next-to-checkbox">
+				Disponible
+			</label>
 			<br />
 			<label className="form-label">Rango</label>
 			<div className="slidecontainer">
@@ -100,6 +149,7 @@ const CreatePlace = () => {
 					max="1000"
 					className="slider"
 					id="myRange"
+					value={range}
 				/>
 				<p className="range-label">{range}</p>
 			</div>
@@ -149,18 +199,37 @@ const CreatePlace = () => {
 				}}
 				className="form-input shadow-sm"
 				placeholder="Latitud , longitud"
+				value={lonLat}
 			/>
 			<br />
 			<button
 				className="create-btn shadow"
 				onClick={() => {
-					callAddPlace({
-						name: name,
-						available: available,
-						range: range,
-						type: type,
-						lonLat: lonLat,
-					});
+					if (type === "Seleccione un tipo" || lonLat === "" || name === "") {
+						setToastType("Missing");
+						setShowToast(true);
+					} else {
+						setAvailable(false);
+						setType("Seleccione un tipo");
+						setLonLat("");
+						setName("");
+						setRange(0);
+						callAddPlace({
+							name: name,
+							available: available,
+							range: range,
+							type: type,
+							lonLat: lonLat,
+						})
+							.then(() => {
+								setToastType("success");
+								setShowToast(true);
+							})
+							.catch(() => {
+								setToastType("error");
+								setShowToast(true);
+							});
+					}
 				}}
 			>
 				Crear

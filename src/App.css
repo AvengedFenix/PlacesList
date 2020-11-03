@@ -1,5 +1,22 @@
 @import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;700&family=Roboto:wght@100;200;300;400;500;800&display=swap");
 
+.toast-container{
+	margin-top:1%;
+	width: 70%;
+	border-radius: 8px;
+}
+
+.map-container{
+	width: 100%;
+}
+
+.toast-msg{
+	padding: 2%;
+	font-family: montserrat, open-sans;
+	font-weight: 500;
+	font-size: 6px;
+
+}
 .loading-container{
 	--position: relative;
 	--top:50%;

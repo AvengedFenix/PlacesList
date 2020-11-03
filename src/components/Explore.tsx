@@ -6,7 +6,6 @@ import { UserContext } from "./../providers/UserProvider";
 import Register from "./Register";
 import { functions } from "../services/Firebase";
 import Firebase from "./../services/Firebase";
-import { listenerCount } from "cluster";
 import Loading from "./Loading";
 
 const placesRef = db.collection("places");
@@ -75,7 +74,7 @@ const Explore = () => {
 
 	const fetchPlaces = async () => {
 		// let list: any = [];
-		let list: any;
+		let list: any = [];
 		if (search === "") {
 			const getPlaces = await functions.httpsCallable("getPlaces");
 			await getPlaces().then((res: any) => {
@@ -93,6 +92,10 @@ const Explore = () => {
 		setPlaces(list);
 	};
 	console.log(places);
+
+	useEffect(() => {
+		fetchPlaces();
+	}, []);
 
 	useEffect(() => {
 		setLoading(false);
@@ -131,12 +134,12 @@ const Explore = () => {
 			centroGubernamental: filterButtons.centroGubernamental,
 			centroComercial: filterButtons.centroComercial,
 			parque: filterButtons.parque,
-			centroReligion: filterButtons.centroReligion
-		}).then((res:any)=>{
+			centroReligion: filterButtons.centroReligion,
+		}).then((res: any) => {
 			console.log(res);
-			
+			setPlaces(res.data);
 		});
-	}, [filterButtons, search]);
+	}, [filterButtons]);
 	return (
 		<>
 			<input

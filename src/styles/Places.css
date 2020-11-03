@@ -43,7 +43,7 @@
 	--font-weight: 300;
 	font-size: 14px;
 	line-height: 19px;
-	left: 37%;
+	padding-left: 37%;
 	color: rgba(0, 0, 0, 0.4);
 	margin-bottom: 0;
 }
@@ -74,7 +74,7 @@
 .card-info {
 	position: relative;
 	text-align: left;
-	left: 37%;
+	padding-left: 37%;
 	font-family: Roboto;
 	font-style: normal;
 	font-weight: 500;
